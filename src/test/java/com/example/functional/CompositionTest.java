@@ -1,7 +1,9 @@
 package com.example.functional;
 
+import org.assertj.core.util.TriFunction;
 import org.junit.jupiter.api.Test;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -14,13 +16,13 @@ public class CompositionTest {
         int input = 5;
 
         // 7
-        int result1 = add_two(input);
+        int result1 = addTwo(input);
 
         // 21
-        int result2 = multiple_by_three(result1);
+        int result2 = multipleByThree(result1);
 
         // 16
-        int lastResult = subtract_five(result2);
+        int lastResult = subtractFive(result2);
 
         assertThat(lastResult).isEqualTo(16);
     }
@@ -30,20 +32,20 @@ public class CompositionTest {
         int input = 5;
 
         // 16
-        int lastResult = subtract_five(multiple_by_three(add_two(input)));
+        int lastResult = subtractFive(multipleByThree(addTwo(input)));
 
         assertThat(lastResult).isEqualTo(16);
     }
 
-    private int add_two(int number) {
+    private int addTwo(int number) {
         return number + 2;
     }
 
-    private int multiple_by_three(int number) {
+    private int multipleByThree(int number) {
         return number * 3;
     }
 
-    private int subtract_five(int number) {
+    private int subtractFive(int number) {
         return number - 5;
     }
 
@@ -61,16 +63,16 @@ public class CompositionTest {
             f(1) = 3
         */
 
-        Function<Integer, Integer> addTwo = number -> number + 2;
+//      Function<Integer, Integer> addTwo = number -> addTwo(number);
+//      Function<Integer, Integer> addTwo = number -> number + 2;
+        Function<Integer, Integer> addTwo = this::addTwo;
 
         int result = addTwo.apply(1);
 
         assertThat(result).isEqualTo(3);
     }
 
-    public static Function<Integer, Integer> addTwo(Integer number) {
-        return x -> number + 2;
-    }
+
 
     @Test
     void functionalComposition() {
@@ -93,4 +95,5 @@ public class CompositionTest {
 
         assertThat(result).isEqualTo(16);
     }
+
 }
