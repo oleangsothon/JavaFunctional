@@ -1,9 +1,7 @@
 package com.example.functional;
 
-import org.assertj.core.util.TriFunction;
 import org.junit.jupiter.api.Test;
 
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,7 +48,7 @@ public class CompositionTest {
     }
 
     @Test
-    void basic_functional() {
+    void basicFunctional() {
 
         /*
             Function<Integer, Integer> addTwo = (Integer number) -> {
@@ -72,10 +70,45 @@ public class CompositionTest {
         assertThat(result).isEqualTo(3);
     }
 
+    @Test
+    void funcComposition() {
+
+        int input = 5;
+        int addTwoRes = addTwo.apply(input);
+        int multipleByThreeRes = multipleByThree.apply(addTwoRes);
+        int result = subtractFive.apply(multipleByThreeRes);
+
+        assertThat(result).isEqualTo(16);
+    }
+
+    @Test
+    void composition() {
+
+        Function<Integer, Integer> composedFunction = compose(addTwo, multipleByThree, subtractFive);
+
+        int result = composedFunction.apply(5);
+
+        assertThat(result).isEqualTo(16);
+    }
+
+    static Function<Integer, Integer> addTwo = number -> number + 2;
+    static Function<Integer, Integer> multipleByThree = number -> number * 3;
+    static Function<Integer, Integer> subtractFive = number -> number - 5;
+
+    static <T> Function<T, T> compose(Function<T, T>... functions) {
+        return x -> {
+            T result = x;
+            for (Function<T, T> func : functions) {
+                result = func.apply(result);
+            }
+            return result;
+        };
+    }
+
 
 
     @Test
-    void functionalComposition() {
+    void other() {
 
         // input = 5
         // f(x) add_two
@@ -84,10 +117,6 @@ public class CompositionTest {
 
         // (f.g.h)(x) = h(g(f(x)))
         // addTwo.multipleByThree.subtractFive(5) = subtractFive(multipleByThree(addTwo(5)))
-
-        Function<Integer, Integer> addTwo = number -> number + 2;
-        Function<Integer, Integer> multipleByThree = number -> number * 3;
-        Function<Integer, Integer> subtractFive = number -> number - 5;
 
         Function<Integer, Integer> calculateSomeThing = addTwo.andThen(multipleByThree.andThen(subtractFive));
 

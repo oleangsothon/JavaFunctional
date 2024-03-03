@@ -22,7 +22,17 @@ public class CurringAndPartialApplyTest {
 
     @Test
     void curryingTest() {
+        /*
+            - Function ชื่อ curriedAdd
+            - Input 1 argument type Integer
+            - Return Function ซ้อน Function ที่มี
+                - Input 1 argument type Integer
+        */
         Function<Integer, Function<Integer, Function<Integer, Integer>>> curriedAdd = curryAdd();
+
+//        Function<Integer, Function<Integer, Integer>> add5 = curriedAdd.apply(5);
+//        Function<Integer, Integer> add3 = add5.apply(3);
+//        int resultAdd2 = add3.apply(2);
 
         int curriedResult = curriedAdd.apply(5).apply(3).apply(2);
 
@@ -52,7 +62,4 @@ public class CurringAndPartialApplyTest {
     static BiFunction<Integer, Integer, Integer> partialApply(Integer a) {
         return (Integer b, Integer c) -> add(a, b, c);
     }
-
-
-
 }
