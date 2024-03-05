@@ -9,11 +9,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CurringAndPartialApplyTest {
 
-    // Currying - เป็นเทคนิคการแปลงฟังก์ชันที่มีอาร์กิวเมนต์หลายตัว เป็นฟังก์ชันที่มีอาร์กิวเมนต์ตัวเดียว
+    // Currying - เป็นเทคนิคการแปลง function ที่มี argument หลายตัว เป็นฟังก์ชันที่มีอาร์กิวเมนต์ตัวเดียว
 
     /* Partial application
-       - เป็นเทคนิคการสร้างฟังก์ชันใหม่จากฟังก์ชันที่มีอยู่ โดย “แก้ไขอาร์กิวเมนต์บางส่วน” ของฟังก์ชันดั้งเดิม
-       - ฟังก์ชันใหม่จะมีอาร์กิวเมนต์น้อยลง
+       - เป็นเทคนิคการสร้างฟังก์ชันใหม่จาก function ที่มีอยู่ โดย “แก้ไข argument บางส่วน” ของ function ดั้งเดิม
+       - function ใหม่จะมี argument น้อยลง
     */
 
     static int add(int a, int b, int c) {
@@ -22,12 +22,7 @@ public class CurringAndPartialApplyTest {
 
     @Test
     void curryingTest() {
-        /*
-            - Function ชื่อ curriedAdd
-            - Input 1 argument type Integer
-            - Return Function ซ้อน Function ที่มี
-                - Input 1 argument type Integer
-        */
+
         Function<Integer, Function<Integer, Function<Integer, Integer>>> curriedAdd = curryAdd();
 
 //        Function<Integer, Function<Integer, Integer>> add5 = curriedAdd.apply(5);
@@ -39,9 +34,21 @@ public class CurringAndPartialApplyTest {
         assertThat(curriedResult).isEqualTo(10);
     }
 
-    static Function<Integer, Function<Integer, Function<Integer, Integer>>> curryAdd() {
-        return a -> b -> c -> add(a, b, c);
+    public static Function<Integer, Function<Integer, Function<Integer, Integer>>> curryAdd() {
+        return a -> curryAdd2((a));
     }
+
+    private static Function<Integer, Function<Integer, Integer>> curryAdd2(Integer a) {
+        return b -> curryAdd3(a, b);
+    }
+
+    private static Function<Integer, Integer> curryAdd3(Integer a, Integer b) {
+        return c -> add(a, b, c);
+    }
+
+//    static Function<Integer, Function<Integer, Function<Integer, Integer>>> curryAdd() {
+//        return a -> b -> c -> add(a, b, c);
+//    }
 
     @Test
     void partialTest() {
