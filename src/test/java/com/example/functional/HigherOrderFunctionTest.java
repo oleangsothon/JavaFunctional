@@ -12,32 +12,13 @@ public class HigherOrderFunctionTest {
     @Test
     void highOrderFunctions() {
 
-        /* สมการของเรา
-            f(x)(y) = f(g(x,y))
-            Function<Integer, Function<Integer, Integer>> addFunction = createOperation((x, y) -> add(x, y));
-        */
-        Function<Integer, Function<Integer, Integer>> addFunction = createOperation(HigherOrderFunctionTest::add);
-        Function<Integer, Function<Integer, Integer>> multiplyFunction = createOperation(HigherOrderFunctionTest::multiply);
+        BiFunction<Integer, Integer, Integer> add = (Integer x, Integer y) -> x + y;
+        BiFunction<Integer, Integer, Integer> multiplyBy2 = (x, y) -> 2 * add.apply(x, y);
 
+        Integer result = multiplyBy2.apply(1, 2);
 
-        int resultAddition = addFunction.apply(3).apply(4);
-        int resultMultiplication = multiplyFunction.apply(3).apply(4);
+        assertThat(result).isEqualTo(6);
 
-        assertThat(resultAddition).isEqualTo(7);
-        assertThat(resultMultiplication).isEqualTo(12);
     }
 
-
-    public static Function<Integer, Function<Integer, Integer>> createOperation(BiFunction<Integer, Integer, Integer> operation) {
-        return x -> y -> operation.apply(x, y);
-    }
-
-
-    public static Integer add(Integer x, Integer y) {
-        return x + y;
-    }
-
-    public static Integer multiply(Integer x, Integer y) {
-        return x * y;
-    }
 }
