@@ -54,11 +54,6 @@ public class CompositionTest {
             Function<Integer, Integer> addTwo = (Integer number) -> {
                 return number + 2;
             };
-
-            สมการของเรา
-            f(x) = x + 2
-            f(1) = 1 + 2
-            f(1) = 3
         */
 
 //      Function<Integer, Integer> addTwo = number -> addTwo(number);

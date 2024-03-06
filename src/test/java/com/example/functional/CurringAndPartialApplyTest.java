@@ -12,7 +12,7 @@ public class CurringAndPartialApplyTest {
     // Currying - เป็นเทคนิคการแปลง function ที่มี argument หลายตัว เป็นฟังก์ชันที่มีอาร์กิวเมนต์ตัวเดียว
 
     /* Partial application
-       - เป็นเทคนิคการสร้างฟังก์ชันใหม่จาก function ที่มีอยู่ โดย “แก้ไข argument บางส่วน” ของ function ดั้งเดิม
+       - เป็นเทคนิคการสร้าง function ใหม่จาก function ที่มีอยู่ โดย “แก้ไข argument บางส่วน” ของ function ดั้งเดิม
        - function ใหม่จะมี argument น้อยลง
     */
 
