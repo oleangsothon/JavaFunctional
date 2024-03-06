@@ -10,27 +10,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MonadVavrTest {
 
     private static Either<String, Integer> multiplyBy2(Integer number) {
-        if (number == 0) {
-            return Either.left("Multiply by zero");
-        } else {
-            return Either.right(number * 2);
-        }
+        return number == 0 ? Either.left("Multiply by zero") : Either.right(number * 2);
     }
 
     private static Either<String, Integer> divideBy2(Integer number) {
-        if (number == 0) {
-            return Either.left("Divide by zero");
-        } else {
-            return Either.right(number / 2);
-        }
+        return number == 0 ? Either.left("Divide by zero") : Either.right(number / 2);
     }
 
     private static Either<String, Integer> subtract2(Integer number) {
-        if (number == 0) {
-            return Either.left("Subtract by zero");
-        } else {
-            return Either.right(number - 2);
-        }
+        return number == 0 ? Either.left("Subtract by zero") : Either.right(number - 2);
     }
 
     private static Either<String, Integer> add3(Integer number) {
@@ -43,17 +31,17 @@ public class MonadVavrTest {
                 .flatMap(MonadVavrTest::divideBy2)
                 .flatMap(MonadVavrTest::add3);
 
-        if (result.isRight()) {
-            return MessageResult.builder()
+        return result.isRight()
+                ?  MessageResult.builder()
                     .status(true)
+                    .message("Success")
                     .value(result.get())
+                    .build()
+                :  MessageResult.builder()
+                    .status(false)
+                    .message(result.swap().get())
+                    .value(0)
                     .build();
-        }
-
-        return MessageResult.builder()
-                .status(false)
-                .message(result.getLeft())
-                .build();
     }
 
     @Test
